@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { color-scheme: light dark; --bg: #ffffff; --fg: #1f2328; --muted: #656d76; --line: #d0d7de; --btn: #f6f8fa; --accent: #1a7f37; --bad: #cf222e; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #161b22; --fg: #e6edf3; --muted: #8b949e; --line: #30363d; --btn: #21262d; --accent: #3fb950; --bad: #f85149; } }
+  body { margin: 0; padding: 14px 16px; width: 320px; background: var(--bg); color: var(--fg); font: 13px/1.45 system-ui, -apple-system, sans-serif; }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 4px; padding-top: 10px; border-top: 1px solid var(--line); }
+  .count { font-size: 26px; font-weight: 700; color: var(--accent); }
+  .muted { color: var(--muted); }
+  .ok { color: var(--accent); } .bad { color: var(--bad); }
+  button { display: block; width: 100%; margin-top: 8px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--btn); color: var(--fg); font: inherit; cursor: pointer; text-align: left; }
+  button:hover { border-color: var(--muted); }
+  input[type=password] { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); font: inherit; }
+  label { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+  .row { margin-top: 6px; }
+  #msg, #ghmsg { min-height: 1.2em; margin-top: 8px; }
+</style>
+</head>
+<body>
+  <h1>Cert Reader</h1>
+  <div><span class="count" id="count">0</span> <span class="muted">certs saved (PSA + CGC)</span></div>
+  <div class="row muted" id="last"></div>
+  <div class="row muted" id="saved"></div>
+  <label><input type="checkbox" id="auto"> Save results.csv after each page</label>
+  <button id="save">Save results.csv now</button>
+  <button id="show">Show results.csv in its folder</button>
+  <button id="clear">Clear all saved certs…</button>
+  <div id="msg" class="muted"></div>
+
+  <h2>GitHub (card-data's results.csv)</h2>
+  <div id="ghstate" class="muted"></div>
+  <input type="password" id="key" autocomplete="off" placeholder="Paste your card-inbox key (github_pat_…)">
+  <button id="savekey">Save key</button>
+  <button id="send">Send waiting certs now</button>
+  <div id="ghmsg" class="muted"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
