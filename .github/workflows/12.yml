@@ -4,13 +4,14 @@
 # (on GitHub: Add file > Create new file, type that name, paste, Commit changes).
 #
 # It runs on GitHub's computers, so it works with your laptop off. For each new link in your links
-# file it opens the page through your Decodo proxy, in a browser with your extension loaded, waits
-# for the extension to read it, and saves the read to your inbox repo, 100 at a time.
+# file it opens the page in a browser with your extension loaded (through your Decodo proxy when
+# USE_PROXY is "true"; straight from GitHub when it's "false"), waits for the extension to read it,
+# and saves the read to your inbox repo, 100 at a time.
 # A run starts by itself when the links file or this file changes, every 6 hours to pick up anything
 # left over, or when you press "Run workflow" on the Actions tab. Progress is kept in opened.csv.
 #
-# Needs two repo secrets: DECODO_PASSWORD (the proxy password) and CARD_INBOX_KEY (a GitHub key
-# that can write to the inbox repo). The code is 11.py in BrettS600/scrap.
+# Needs the repo secret CARD_INBOX_KEY (a GitHub key that can write to the inbox repo), and
+# DECODO_PASSWORD (the proxy password) when USE_PROXY is "true". The code is 11.py in BrettS600/scrap.
 # Optional third secret, SCRAP_REPORT_KEY (a GitHub key for BrettS600/scrap only, Issues: Read and
 # write): with it, every run posts a short report (counts, step results, stop reasons - no links)
 # as a comment on the "Link opener reports" issue in scrap, so the chat that built this can read it.
@@ -39,8 +40,9 @@ permissions:
 
 env:
   LIMIT: "50" # most links one run opens (0 = no limit). Keep it small until you've seen the data use.
+  USE_PROXY: "false" # "false" = straight from GitHub, no Decodo. "true" = through Decodo.
   KEEP_GOING: "false" # "true" = start the next run straight away while links are left
-  BROWSERS: "2" # browsers at once, each on its own proxy IP
+  BROWSERS: "2" # browsers at once (with the proxy, each on its own proxy IP)
   RUN_MINUTES: "300" # a run stops opening links after this long (GitHub's limit is 6 hours)
   LINKS_FILE: "" # "" = the CSV in the top folder (links.csv if there are several)
   LINK_COLUMN: "0" # 0 = the first web address in each row; or a column number or heading
@@ -50,7 +52,7 @@ env:
   BATCH: "100" # reads per save
   READ_WAIT_SECONDS: "25" # longest wait for the extension's first read of a page
   SETTLE_SECONDS: "5" # a read counts as finished after this long without changing
-  LIGHT: "true" # skip pictures, fonts, styles, video and trackers to save proxy data
+  LIGHT: "true" # skip pictures, fonts, video and trackers to save data
   PROXY_HOST: "us.decodo.com"
   PROXY_PORTS: "10001-10010"
   PROXY_USER: "user-sp2e2o4qkx-sessionduration-30"
@@ -60,7 +62,7 @@ env:
 jobs:
   open:
     name: "Open links"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 350
     env:
       RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
