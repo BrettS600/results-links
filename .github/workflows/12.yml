@@ -44,7 +44,7 @@ env:
   KEEP_GOING: "false" # "true" = start the next run straight away while links are left
   BROWSERS: "2" # browsers at once (with the proxy, each on its own proxy IP)
   RUN_MINUTES: "300" # a run stops opening links after this long (GitHub's limit is 6 hours)
-  LINKS_FILE: "" # "" = the CSV in the top folder (links.csv if there are several)
+  LINKS_FILE: "scans.csv" # "" = the CSV in the top folder (links.csv if there are several)
   LINK_COLUMN: "0" # 0 = the first web address in each row; or a column number or heading
   EXTENSION_FOLDER: "cert-reader" # the extension's folder in this repo
   INBOX_REPO: "BrettS600/card-inbox" # where the reads are saved
